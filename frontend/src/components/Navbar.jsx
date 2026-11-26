@@ -1,11 +1,23 @@
 import { useState } from 'react';
-import { Search, User, ShoppingBag, Menu, X } from 'lucide-react';
+import { Search, User, ShoppingBag, Menu, X, ChevronDown } from 'lucide-react';
 
-const NAV_LINKS = ['Home', 'About', 'Menu', 'Blog'];
+const NAV_LINKS = ['Home', 'Menu', 'Restaurants', 'About'];
+
+const MENU_CATEGORIES = [
+  { id: 'burger', label: 'Burger' },
+  { id: 'pizza', label: 'Pizza' },
+  { id: 'chicken', label: 'Chicken' },
+  { id: 'noodles', label: 'Noodles' },
+  { id: 'sandwich', label: 'Sandwich' },
+  { id: 'dessert', label: 'Dessert' },
+  { id: 'coffee', label: 'Coffee' },
+  { id: 'healthy', label: 'Healthy' },
+];
 
 export default function Navbar({
   activeNav,
   onNavChange,
+  onSelectCategory,
   searchQuery,
   onSearchChange,
   cartCount,
@@ -15,6 +27,15 @@ export default function Navbar({
   onSignOut,
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleCategoryClick = (categoryId) => {
+    onSelectCategory?.(categoryId);
+    onNavChange('Menu');
+    setMobileOpen(false);
+    document
+      .getElementById('categories')
+      ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   return (
     <header className="w-full relative z-30">
@@ -40,6 +61,50 @@ export default function Navbar({
         <nav className="hidden md:flex items-center gap-8">
           {NAV_LINKS.map((item) => {
             const isActive = activeNav === item;
+
+            if (item === 'Menu') {
+              return (
+                <div key={item} className="relative group py-2">
+                  <a
+                    href="#menu"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      onNavChange(item);
+                    }}
+                    className={`inline-flex items-center gap-1 text-sm transition-colors ${
+                      isActive
+                        ? 'text-[#111111] font-semibold'
+                        : 'text-stone-500 font-medium group-hover:text-[#111111]'
+                    }`}
+                  >
+                    <span>{item}</span>
+                    <ChevronDown className="w-3.5 h-3.5 transition-transform duration-200 group-hover:rotate-180" />
+                  </a>
+
+                  {/* Hover Categories Dropdown */}
+                  <div className="absolute left-1/2 -translate-x-1/2 top-full pt-1.5 opacity-0 invisible translate-y-1 group-hover:opacity-100 group-hover:visible group-hover:translate-y-0 transition-all duration-150 z-40">
+                    <div className="w-60 bg-white rounded-2xl border border-stone-200/85 shadow-[0_14px_36px_rgba(0,0,0,0.08)] p-2.5">
+                      <p className="px-2.5 pb-1.5 text-[11px] font-semibold uppercase tracking-wider text-stone-400">
+                        Categories
+                      </p>
+                      <div className="grid grid-cols-2 gap-1">
+                        {MENU_CATEGORIES.map((cat) => (
+                          <button
+                            key={cat.id}
+                            type="button"
+                            onClick={() => handleCategoryClick(cat.id)}
+                            className="text-left px-2.5 py-2 rounded-lg text-xs sm:text-[13px] font-medium text-stone-700 hover:bg-[#FFF5EC] hover:text-[#DF1111] transition-colors cursor-pointer"
+                          >
+                            {cat.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            }
+
             return (
               <a
                 key={item}

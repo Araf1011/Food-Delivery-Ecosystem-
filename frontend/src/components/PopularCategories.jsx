@@ -1,15 +1,22 @@
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import burgerImg from '../assets/category pic/burger.jpg';
+import pizzaImg from '../assets/category pic/pizza.jpg';
+import chickenImg from '../assets/category pic/chicken.jpg';
+import noodlesImg from '../assets/category pic/noodles.jpg';
+import dessertImg from '../assets/category pic/dessert.jpg';
+import coffeeImg from '../assets/category pic/coffee.jpg';
+import healthyImg from '../assets/category pic/healthy.jpg';
 
 const CATEGORIES = [
-  { id: 'burger', label: 'Burger', emoji: '🍔', bg: 'bg-[#FFF0DC]' },
-  { id: 'pizza', label: 'Pizza', emoji: '🍕', bg: 'bg-[#FFE9EE]' },
-  { id: 'chicken', label: 'Chicken', emoji: '🍗', bg: 'bg-[#FFF8D6]' },
-  { id: 'noodles', label: 'Noodles', emoji: '🍜', bg: 'bg-[#FFEFF3]' },
+  { id: 'burger', label: 'Burger', image: burgerImg, bg: 'bg-[#FFF0DC]' },
+  { id: 'pizza', label: 'Pizza', image: pizzaImg, bg: 'bg-[#FFE9EE]' },
+  { id: 'chicken', label: 'Chicken', image: chickenImg, bg: 'bg-[#FFF8D6]' },
+  { id: 'noodles', label: 'Noodles', image: noodlesImg, bg: 'bg-[#FFEFF3]' },
   { id: 'sandwich', label: 'Sandwich', emoji: '🥪', bg: 'bg-[#FFF7D4]' },
-  { id: 'dessert', label: 'Dessert', emoji: '🧁', bg: 'bg-[#FFEBF2]' },
-  { id: 'coffee', label: 'Coffee', emoji: '☕', bg: 'bg-[#FFF0DC]' },
-  { id: 'healthy', label: 'Healthy', emoji: '🥗', bg: 'bg-[#E3FBE8]' },
+  { id: 'dessert', label: 'Dessert', image: dessertImg, bg: 'bg-[#FFEBF2]' },
+  { id: 'coffee', label: 'Coffee', image: coffeeImg, bg: 'bg-[#FFF0DC]' },
+  { id: 'healthy', label: 'Healthy', image: healthyImg, bg: 'bg-[#E3FBE8]' },
   { id: 'sushi', label: 'Sushi', emoji: '🍣', bg: 'bg-[#FFEFE8]' },
   { id: 'tacos', label: 'Tacos', emoji: '🌮', bg: 'bg-[#FFF6D6]' },
   { id: 'seafood', label: 'Seafood', emoji: '🍤', bg: 'bg-[#E6F4FF]' },
@@ -46,7 +53,7 @@ export default function PopularCategories({
   };
 
   return (
-    <section className="bg-white py-10 sm:py-14">
+    <section id="categories" className="bg-white py-10 sm:py-14">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-10">
         {/* Header Row */}
         <div className="flex items-center justify-between mb-8">
@@ -95,19 +102,27 @@ export default function PopularCategories({
                   className="group flex flex-col items-center gap-3 focus:outline-none cursor-pointer"
                 >
                   <div
-                    className={`w-[74px] h-[74px] sm:w-[82px] sm:h-[82px] rounded-full ${cat.bg} flex items-center justify-center transition-all duration-200 group-hover:scale-105 group-hover:shadow-md ${
+                    className={`w-[74px] h-[74px] sm:w-[82px] sm:h-[82px] rounded-full overflow-hidden ${cat.bg} flex items-center justify-center shadow-[0_2px_10px_rgba(0,0,0,0.05)] transition-all duration-200 group-hover:scale-105 group-hover:shadow-md ${
                       isSelected
                         ? 'ring-2 ring-[#DF1111] ring-offset-2 scale-105'
                         : ''
                     }`}
                   >
-                    <span
-                      className="text-2xl sm:text-[28px] select-none"
-                      role="img"
-                      aria-label={cat.label}
-                    >
-                      {cat.emoji}
-                    </span>
+                    {cat.image ? (
+                      <img
+                        src={cat.image}
+                        alt={cat.label}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      />
+                    ) : (
+                      <span
+                        className="text-2xl sm:text-[28px] select-none"
+                        role="img"
+                        aria-label={cat.label}
+                      >
+                        {cat.emoji}
+                      </span>
+                    )}
                   </div>
                   <span
                     className={`text-xs sm:text-[13px] transition-colors ${
